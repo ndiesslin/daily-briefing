@@ -1,0 +1,7 @@
+services:
+  daily-briefing:
+    build: .
+    volumes:
+      - ./.env:/app/.env
+      - ./output:/output
+    # Environment variables can also be passed here
