@@ -7,22 +7,15 @@ A containerized Python application that aggregates data from various APIs and RS
 
 ## 🛠️ Tech Stack
 - **Language**: Python 3.11-slim
-- **PDF Engine**: [WeasyPrint](https://weasyprint.org/) (converts HTML/CSS to PDF)
-- **Templating**: Jinja2
+- **Scheduling**: Python `schedule` library (internal daemon)
+- **PDF Engine**: [WeasyPrint](https://weasyprint.org/)
+- **Printing**: CUPS Bridge (via `/var/run/cups/cups.sock`)
 - **Containerization**: Docker & Docker Compose
-- **Scheduling**: Cron (on host machine)
-- **APIs**: Open-Meteo (Weather), CoinGecko (ETH), Gold-API (Gold), Wikipedia (History), ZenQuotes (Quotes).
 
 ## 📂 Core Architecture
-1. **`fetchers.py`**: Contains all data retrieval logic.
-   - `get_weather()`: Uses Geocoding + Forecast APIs. Includes wind/sunrise/sunset.
-   - `get_news()`: Parses RSS feeds using `feedparser`. Strips HTML and "Comments" links.
-   - `get_brain_food()`: Fetches quotes, history, and word of the day.
-   - `generate_sudoku()`: Generates a lightweight puzzle grid.
-2. **`pdf_gen.py`**: Contains the HTML/CSS template and generation logic.
-   - **Constraint**: Designed strictly for a single 8.5" x 11" page.
-   - **Aesthetic**: Minimalist Black & White "Journal" style.
-3. **`main.py`**: The orchestrator. Loads environment variables, calls fetchers, and triggers the PDF generation.
+1. **`main.py`**: The orchestrator. Now includes a **Daemon Mode** that uses the `schedule` library to trigger jobs daily. It also handles the `lp` command internally to send PDFs to the host's printer.
+2. **`fetchers.py`**: Retrieval logic for weather, news, brain food, and puzzles.
+3. **`pdf_gen.py`**: HTML/CSS to PDF generation logic.
 4. **`run_daily.sh`**: A portable shell script designed for `cron`. It navigates to the project dir, runs the Docker container, and sends the output to the Mac system printer (`lp`).
 
 ## 🧱 Key Constraints & Patterns

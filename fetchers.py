@@ -125,17 +125,22 @@ def generate_sudoku():
     return grid
 
 def get_news():
-    rss_urls = os.getenv("RSS_FEED_URL", "https://news.ycombinator.com/rss,https://www.nasa.gov/rss/dyn/breaking_news.rss,https://3dprint.com/feed/,https://www.pinballnews.com/site/feed/").split(",")
+    rss_urls = os.getenv("RSS_FEED_URL", "https://hnrss.org/frontpage,https://www.nasa.gov/rss/dyn/breaking_news.rss,https://3dprint.com/feed/,https://www.pinballnews.com/site/feed/").split(",")
     news_items = []
     
     import re
 
-    def clean_summary(text):
+    def clean_summary(text, source):
         if not text: return ""
-        text = re.sub(r'<a href=.*?>Comments</a>', '', text)
-        text = re.sub(r'Comments', '', text, flags=re.IGNORECASE)
+        # Remove common technical links/tags
+        text = re.sub(r'<a href=.*?>.*?</a>', '', text)
         text = re.sub(r'<.*?>', '', text)
-        return " ".join(text.split())
+        text = " ".join(text.split())
+        
+        # If it's a sparse Hacker News item, provide a better feel
+        if not text and "Hacker News" in source:
+            return "Latest discussion and links from the Hacker News community."
+        return text
 
     for url in rss_urls:
         url = url.strip()
@@ -144,8 +149,14 @@ def get_news():
             feed = feedparser.parse(url)
             source_name = "Hacker News" if "Hacker News" in (feed.feed.title if hasattr(feed.feed, 'title') else "") else (feed.feed.title if hasattr(feed.feed, 'title') else url)
             
-            for entry in feed.entries[:2]: # Only 2 per source
-                summary = clean_summary(getattr(entry, 'summary', getattr(entry, 'description', '')))
+            for entry in feed.entries[:2]:
+                raw_summary = getattr(entry, 'summary', getattr(entry, 'description', ''))
+                summary = clean_summary(raw_summary, source_name)
+                
+                # If still empty after cleaner, use a snip of the title or a generic line
+                if not summary or len(summary) < 5:
+                    summary = f"Read the full story from {source_name}."
+
                 news_items.append({
                     "title": entry.title,
                     "summary": summary[:140] + "..." if len(summary) > 140 else summary,
@@ -153,4 +164,4 @@ def get_news():
                 })
         except: continue
             
-    return news_items[:8]  # Strictly cap at 8 items total
+    return news_items[:8]

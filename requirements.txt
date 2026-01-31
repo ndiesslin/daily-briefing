@@ -3,3 +3,4 @@ feedparser
 jinja2
 weasyprint
 python-dotenv
+schedule

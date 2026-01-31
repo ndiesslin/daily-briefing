@@ -26,44 +26,28 @@ cp .env.example .env
 
 Open `.env` and configure:
 - `LOCATION`: Your city or Zip Code (e.g., `90210`).
-- `RSS_FEED_URL`: (Optional) Comma-separated list of RSS feeds.
+- `SCHEDULE_TIME`: The time you want the briefing generated (e.g., `07:00`).
 - `PRINTER_NAME`: (Optional) Your Mac printer name for auto-printing.
 
-### 3. Run Manually
-To generate the PDF on demand:
+**How to find your Printer Name:**
+- **Mac**: Run `lpstat -p` in your terminal.
+- **Windows**: Run `Get-Printer | Select-Object Name` in PowerShell.
+
+*Note: Internal printing auto-delivery is optimized for Mac/Linux host systems.*
+
+### 3. Run
+The container now handles its own scheduling. Simply start it and leave it running:
 ```bash
-docker-compose up --build
+docker-compose up -d --build
 ```
-The resulting PDF will be saved in the `output/` directory as `daily_briefing.pdf`.
+The container will stay active in the background and trigger the briefing every day at your `SCHEDULE_TIME`.
 
 ---
 
-## ⏰ Automatic Morning Printing (Mac)
-
-To have your briefing waiting for you at the printer every morning at 7:00 AM:
-
-### 1. Find your Printer Name
-Run this in your terminal:
-```bash
-lpstat -p
-```
-Copy the name (e.g., `HP_LaserJet_Pro`) and add it to `PRINTER_NAME=` in your `.env` file.
-
-### 2. Set Execute Permissions
-```bash
-chmod +x run_daily.sh
-```
-
-### 3. Schedule the Cron Job
-1. Open your cron editor:
-   ```bash
-   crontab -e
-   ```
-2. Add the following line (replaces the path with your actual project location):
-   ```text
-   0 7 * * * "/absolute/path/to/daily-itinerary/run_daily.sh" >> "/absolute/path/to/daily-itinerary/cron_log.txt" 2>&1
-   ```
-   *Tip: Use `pwd` in the project folder to get the absolute path.*
+## 🏗️ How it Works (Internal Printing)
+This project uses a "CUPS Bridge" to print from inside Docker to your Mac.
+- The `docker-compose.yml` mounts `/var/run/cups/cups.sock`.
+- This allows the container to send print jobs directly to any printer configured on your Mac (USB or Network).
 
 ---
 
