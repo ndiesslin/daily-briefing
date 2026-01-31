@@ -2,8 +2,10 @@ services:
   daily-briefing:
     build: .
     restart: always
+    environment:
+      - CUPS_SERVER=/var/run/cups/cups.sock
     volumes:
       - .:/app
       - ./output:/output
-      - /var/run/cups/cups.sock:/var/run/cups/cups.sock
+      - /private/var/run/cupsd:/var/run/cups/cups.sock
     # Environment variables can also be passed here
