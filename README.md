@@ -46,8 +46,19 @@ The container will stay active in the background and trigger the briefing every 
 
 ## 🏗️ How it Works (Internal Printing)
 This project uses a "CUPS Bridge" to print from inside Docker to your Mac.
-- The `docker-compose.yml` mounts `/var/run/cups/cups.sock`.
+- The `docker-compose.yml` mounts the host's CUPS socket (`/private/var/run/cupsd` on Mac).
 - This allows the container to send print jobs directly to any printer configured on your Mac (USB or Network).
+
+---
+
+## 🪟 Windows Users
+
+The automatic printing feature (the "CUPS Bridge") is designed for Mac and Linux systems. Because Windows does not use the Unix socket standard for CUPS, the container cannot speak directly to your local printer.
+
+**How to use on Windows:**
+1.  **PDF Generation**: The container will still run perfectly and generate your `daily_briefing.pdf` into the `output/` folder every day at your scheduled time.
+2.  **Manual Print**: Simply open the `output/` folder on your computer and print the PDF manually.
+3.  **Logs**: You may see an error in the Docker logs saying `lp: Error - No default destination`—this is expected on Windows and won't stop the PDF from being created.
 
 ---
 
