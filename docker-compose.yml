@@ -6,7 +6,7 @@ services:
       - SCHEDULE_TIME=07:00
       - PRINTER_NAME=  # Set this in your .env
     volumes:
-      - ./.env:/app/.env
+      - .:/app
       - ./output:/output
       - /var/run/cups/cups.sock:/var/run/cups/cups.sock
     # Environment variables can also be passed here

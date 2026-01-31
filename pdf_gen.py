@@ -58,9 +58,9 @@ HTML_TEMPLATE = """
         .checkbox { width: 12px; height: 12px; border: 1px solid #000; display: inline-block; }
 
         /* Comic Section */
-        .comic-box { margin-top: 15px; text-align: center; border-top: 1.5px solid #000; padding-top: 10px; }
-        .comic-img { max-width: 100%; max-height: 200px; filter: grayscale(100%) contrast(1.2); display: block; margin: 0 auto; }
-        .comic-title { font-size: 8px; font-weight: bold; margin-top: 4px; text-transform: uppercase; color: #555; }
+        .comic-box { margin-top: 10px; text-align: left; padding-top: 0; }
+        .comic-img { max-width: 100%; max-height: 180px; filter: grayscale(100%) contrast(1.2); display: block; margin: 0 auto; }
+        .comic-title { font-size: 7.5px; font-weight: bold; margin-top: 3px; text-transform: uppercase; color: #555; text-align: center; }
     </style>
 </head>
 <body>
@@ -114,8 +114,16 @@ HTML_TEMPLATE = """
                     {% endfor %}
                 </div>
             </div>
+
+            {% if data.comic %}
+            <div class="comic-box">
+                <div class="section-title">Daily Comic (xkcd)</div>
+                <img src="{{ data.comic.img }}" class="comic-img">
+                <div class="comic-title">{{ data.comic.title }}</div>
+            </div>
+            {% endif %}
             
-            <div style="font-size: 8px; color: #999; margin-top: 30px; border-top: 1px solid #eee; padding-top: 5px;">
+            <div style="font-size: 8px; color: #999; margin-top: 15px; border-top: 1px solid #eee; padding-top: 5px;">
                 Generated: {{ date_full }}<br>
                 System Status: All systems nominal
             </div>
@@ -153,14 +161,6 @@ HTML_TEMPLATE = """
                     {{ data.brain.history }}
                 </div>
             </div>
-
-            {% if data.comic %}
-            <div class="comic-box">
-                <div class="section-title">Daily Comic (xkcd)</div>
-                <img src="{{ data.comic.img }}" class="comic-img">
-                <div class="comic-title">{{ data.comic.title }}</div>
-            </div>
-            {% endif %}
         </div>
     </div>
 </body>
