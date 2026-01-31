@@ -56,6 +56,11 @@ HTML_TEMPLATE = """
         .tasks { list-style: none; padding: 0; }
         .tasks li { margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
         .checkbox { width: 12px; height: 12px; border: 1px solid #000; display: inline-block; }
+
+        /* Comic Section */
+        .comic-box { margin-top: 15px; text-align: center; border-top: 1.5px solid #000; padding-top: 10px; }
+        .comic-img { max-width: 100%; max-height: 200px; filter: grayscale(100%) contrast(1.2); display: block; margin: 0 auto; }
+        .comic-title { font-size: 8px; font-weight: bold; margin-top: 4px; text-transform: uppercase; color: #555; }
     </style>
 </head>
 <body>
@@ -148,6 +153,14 @@ HTML_TEMPLATE = """
                     {{ data.brain.history }}
                 </div>
             </div>
+
+            {% if data.comic %}
+            <div class="comic-box">
+                <div class="section-title">Daily Comic (xkcd)</div>
+                <img src="{{ data.comic.img }}" class="comic-img">
+                <div class="comic-title">{{ data.comic.title }}</div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </body>

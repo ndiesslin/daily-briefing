@@ -165,3 +165,19 @@ def get_news():
         except: continue
             
     return news_items[:8]
+
+def get_xkcd():
+    print("Fetching XKCD comic...")
+    try:
+        url = "https://xkcd.com/info.0.json"
+        resp = requests.get(url, timeout=5)
+        if resp.status_code == 200:
+            data = resp.json()
+            return {
+                "img": data.get("img"),
+                "title": data.get("title"),
+                "alt": data.get("alt")
+            }
+    except Exception as e:
+        print(f"Error fetching XKCD: {e}")
+    return None

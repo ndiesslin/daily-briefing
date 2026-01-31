@@ -4,7 +4,7 @@ import schedule
 import subprocess
 from dotenv import load_dotenv
 from pdf_gen import generate_pdf
-from fetchers import get_weather, get_news, get_brain_food, get_markets, get_moon_phase, generate_sudoku
+from fetchers import get_weather, get_news, get_brain_food, get_markets, get_moon_phase, generate_sudoku, get_xkcd
 
 def run_job():
     print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Starting daily briefing job...")
@@ -16,6 +16,7 @@ def run_job():
         markets = get_markets()
         moon = get_moon_phase()
         sudoku = generate_sudoku()
+        comic = get_xkcd()
         
         data = {
             "weather": weather,
@@ -23,7 +24,8 @@ def run_job():
             "brain": brain_food,
             "markets": markets,
             "moon": moon,
-            "sudoku": sudoku
+            "sudoku": sudoku,
+            "comic": comic
         }
         
         output_path = "/output/daily_briefing.pdf" if os.path.exists("/output") else "daily_briefing.pdf"
