@@ -62,7 +62,7 @@ def main():
         
         while True:
             schedule.run_pending()
-            time.sleep(60)
+            time.sleep(1)
     else:
         run_job()
 

@@ -22,4 +22,4 @@ COPY . .
 # Ensure output directory exists for volume mounting
 RUN mkdir -p /output
 
-CMD ["python", "main.py"]
+CMD ["python", "-u", "main.py"]
