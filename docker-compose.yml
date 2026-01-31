@@ -2,9 +2,6 @@ services:
   daily-briefing:
     build: .
     restart: always
-    environment:
-      - SCHEDULE_TIME=07:00
-      - PRINTER_NAME=  # Set this in your .env
     volumes:
       - .:/app
       - ./output:/output
