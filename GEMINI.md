@@ -1,6 +1,6 @@
 # 🤖 Project Context for Daily Briefing
 
-This document provides a technical overview of the **Daily Itinerary Briefing** project to help an AI assistant understand the codebase for maintenance, debugging, or feature extensions.
+This document provides a technical overview of the **Daily Briefing** project to help an AI assistant understand the codebase for maintenance, debugging, or feature extensions.
 
 ## 📝 Project Overview
 A containerized Python application that aggregates data from various APIs and RSS feeds to generate a single-page, black-and-white 8.5" x 11" PDF briefing for morning printing.
