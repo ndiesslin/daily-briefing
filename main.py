@@ -53,7 +53,8 @@ def main():
     daemon_mode = os.getenv("DAEMON_MODE", "true").lower() == "true"
     
     if daemon_mode:
-        print(f"Starting in daemon mode. Briefing scheduled for {schedule_time} daily.")
+        print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Starting in daemon mode.")
+        print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Briefing scheduled for {schedule_time} daily.")
         schedule.every().day.at(schedule_time).do(run_job)
         
         # Run once on startup if you want immediate feedback

@@ -4,8 +4,10 @@ services:
     restart: always
     environment:
       - CUPS_SERVER=/var/run/cups/cups.sock
+      - TZ=${TZ:-UTC}
     volumes:
       - .:/app
       - ./output:/output
       - /private/var/run/cupsd:/var/run/cups/cups.sock
+      - /etc/localtime:/etc/localtime:ro
     # Environment variables can also be passed here
