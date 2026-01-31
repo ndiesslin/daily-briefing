@@ -90,8 +90,9 @@ HTML_TEMPLATE = """
 
             <div class="section">
                 <div class="section-title">Markets & Environment</div>
-                <div class="market-item"><span class="market-label">Gold (XAU)</span> <span>{{ data.markets.gold }}</span></div>
-                <div class="market-item"><span class="market-label">Ethereum</span> <span>{{ data.markets.eth }}</span></div>
+                {% for label, price in data.markets.items() %}
+                <div class="market-item"><span class="market-label">{{ label }}</span> <span>{{ price }}</span></div>
+                {% endfor %}
                 <div style="margin-top: 10px; font-size: 10px;">{{ data.moon }}</div>
             </div>
 

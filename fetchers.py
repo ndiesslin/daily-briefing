@@ -92,18 +92,29 @@ def get_brain_food():
     return {"quote": quote, "history": history, "word": {"term": word, "def": definition}}
 
 def get_markets():
-    markets = {"eth": "N/A", "gold": "N/A"}
-    try:
-        # ETH from CoinGecko
-        eth_resp = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd", timeout=5)
-        if eth_resp.status_code == 200:
-            markets["eth"] = f"${eth_resp.json()['ethereum']['usd']:,}"
+    symbols = os.getenv("MARKET_SYMBOLS", "XAU,ETH").split(",")
+    markets = {}
+    
+    # Mapping for friendly labels and API lookups
+    crypto_ids = {"ETH": "ethereum", "BTC": "bitcoin", "SOL": "solana", "DOGE": "dogecoin", "LINK": "chainlink"}
+    metal_syms = {"XAU": "Gold", "XAG": "Silver", "XPT": "Platinum", "XPD": "Palladium"}
+
+    for sym in symbols:
+        sym = sym.strip().upper()
+        try:
+            if sym in crypto_ids:
+                cid = crypto_ids[sym]
+                resp = requests.get(f"https://api.coingecko.com/api/v3/simple/price?ids={cid}&vs_currencies=usd", timeout=5)
+                if resp.status_code == 200:
+                    price = resp.json()[cid]['usd']
+                    markets[sym] = f"${price:,}" if price >= 1 else f"${price:.4f}"
+            elif sym in metal_syms:
+                label = metal_syms[sym]
+                resp = requests.get(f"https://api.gold-api.com/price/{sym}", timeout=5)
+                if resp.status_code == 200:
+                    markets[f"{label} ({sym})"] = f"${resp.json()['price']:.2f}"
+        except: continue
         
-        # Gold
-        gold_resp = requests.get("https://api.gold-api.com/price/XAU", timeout=5)
-        if gold_resp.status_code == 200:
-            markets["gold"] = f"${gold_resp.json()['price']:.2f}"
-    except: pass
     return markets
 
 def get_moon_phase():
