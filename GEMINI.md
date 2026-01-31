@@ -1,4 +1,4 @@
-# 🤖 Project Context for Gemini / AI Assistants
+# 🤖 Project Context for Daily Briefing
 
 This document provides a technical overview of the **Daily Itinerary Briefing** project to help an AI assistant understand the codebase for maintenance, debugging, or feature extensions.
 

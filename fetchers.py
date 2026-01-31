@@ -71,7 +71,7 @@ def get_brain_food():
         m = f"{now.month:02d}"
         d = f"{now.day:02d}"
         hist_url = f"https://en.wikipedia.org/api/rest_v1/feed/onthisday/selected/{m}/{d}"
-        resp = requests.get(hist_url, timeout=5, headers={"User-Agent": "DailyItineraryBot/1.0 (contact: newsbot@example.com)"})
+        resp = requests.get(hist_url, timeout=5, headers={"User-Agent": "DailyBriefingBot/1.0 (contact: newsbot@example.com)"})
         if resp.status_code == 200:
             events = resp.json().get("selected", [])
             if events:

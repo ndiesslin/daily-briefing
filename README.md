@@ -1,4 +1,4 @@
-# 🗞️ Daily Itinerary Briefing
+# 🗞️ Daily Briefing
 
 A containerized Python application that generates a beautiful, single-page 8.5" x 11" daily briefing including news, weather, markets, and more. Perfect for printing out every morning!
 
