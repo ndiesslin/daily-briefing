@@ -180,15 +180,26 @@ def get_news():
 def get_xkcd():
     print("Fetching XKCD comic...")
     try:
-        url = "https://xkcd.com/info.0.json"
-        resp = requests.get(url, timeout=5)
+        # 1. Get latest comic to find the max ID
+        latest_url = "https://xkcd.com/info.0.json"
+        resp = requests.get(latest_url, timeout=5)
         if resp.status_code == 200:
-            data = resp.json()
-            return {
-                "img": data.get("img"),
-                "title": data.get("title"),
-                "alt": data.get("alt")
-            }
+            latest_data = resp.json()
+            max_id = latest_data.get("num")
+            
+            # 2. Pick a random comic ID
+            random_id = random.randint(1, max_id)
+            random_url = f"https://xkcd.com/{random_id}/info.0.json"
+            
+            # 3. Fetch the random comic
+            comic_resp = requests.get(random_url, timeout=5)
+            if comic_resp.status_code == 200:
+                data = comic_resp.json()
+                return {
+                    "img": data.get("img"),
+                    "title": data.get("title"),
+                    "alt": data.get("alt")
+                }
     except Exception as e:
         print(f"Error fetching XKCD: {e}")
     return None
